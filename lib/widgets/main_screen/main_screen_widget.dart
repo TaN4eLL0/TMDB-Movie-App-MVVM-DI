@@ -45,7 +45,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: LazyLoadIndexedStack(
+      body: IndexedStack(
         index: _selectedTab,
         children: [
           widget.screenFactory.makeMovieHome(),
