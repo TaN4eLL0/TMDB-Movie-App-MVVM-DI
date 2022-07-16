@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:movieapp/domain/api_client/image_downloader.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
 import 'package:provider/provider.dart';

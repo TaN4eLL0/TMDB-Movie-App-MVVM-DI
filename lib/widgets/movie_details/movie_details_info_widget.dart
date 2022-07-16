@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/domain/api_client/image_downloader.dart';
 import 'package:movieapp/navigation/main_navigation_route_names.dart';
+import 'package:movieapp/resources/radial_percent_widget.dart';
 import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:provider/provider.dart';
 
@@ -143,27 +144,52 @@ class _ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var trailerKey = context
-        .select((MovieDetailsModel model) => model.data.trailerData.trailerKey);
-    return trailerKey != null
-        ? TextButton(
-            onPressed: () => Navigator.of(context).pushNamed(
-                MainNavigationRouteNames.movieTrailerWidget,
-                arguments: trailerKey),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.play_arrow, color: Colors.white),
-                Text(
-                  'Play Trailer',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+    var scoreData = context.select((MovieDetailsModel model) => model.data.scoreData);
+    var trailerKey = scoreData.trailerKey;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        TextButton(
+          onPressed: () {},
+          child: Row(
+            children: [
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: RadialPercentWidget(
+                  percent: scoreData.voteAverage / 100,
+                  fillColor: const Color.fromARGB(255, 10, 23, 25),
+                  lineColor: const Color.fromARGB(255, 37, 203, 103),
+                  freeColor: const Color.fromARGB(255, 25, 54, 31),
+                  lineWidth: 3,
+                  child: Text(scoreData.voteAverage.toStringAsFixed(0)),
                 ),
-              ],
-            ),
-          )
-        : const SizedBox.shrink();
+              ),
+              const SizedBox(width: 10,),
+              const Text('User Score'),
+            ],
+          ),
+        ),
+        trailerKey != null
+            ? TextButton(
+                onPressed: () => Navigator.of(context).pushNamed(
+                    MainNavigationRouteNames.movieTrailerWidget,
+                    arguments: trailerKey),
+                child: Row(
+                  children: const [
+                    Icon(Icons.play_arrow, color: Colors.white),
+                    Text(
+                      'Play Trailer',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox.shrink(),
+      ],
+    );
   }
 }
 
@@ -172,8 +198,8 @@ class _MovieGenresWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var summary = context
-        .select((MovieDetailsModel model) => model.data.summary);
+    var summary =
+        context.select((MovieDetailsModel model) => model.data.summary);
     return ColoredBox(
       color: const Color.fromRGBO(22, 21, 25, 1),
       child: Padding(
@@ -198,8 +224,8 @@ class _StaffWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var crew = context
-        .select((MovieDetailsModel model) => model.data.peopleData);
+    var crew =
+        context.select((MovieDetailsModel model) => model.data.peopleData);
     if (crew.isEmpty) return const SizedBox.shrink();
     return Column(
       children: crew

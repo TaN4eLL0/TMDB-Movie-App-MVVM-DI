@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'movie_home_bloc_widget.dart';
-import 'movie_home_data_widget.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_header_widget.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_upcoming_widget.dart';
 import 'movie_home_description_widget.dart';
 import 'movie_home_series_widget.dart';
 
@@ -20,9 +18,14 @@ class _MovieHomeWidgetState extends State<MovieHomeWidget> {
       children: [
         Column(
           children: [
-            MovieHomeBlocWidget(),
-            MovieHomeDataWidget(),
+            const MovieHomeHeaderWidget(),
+            Container(width: double.infinity, height: 10, color: Colors.white10,),
+            const MovieHomeUpcomingWidget(),
+            Container(width: double.infinity, height: 10, color: Colors.white10,),
+
             MovieHomeSeriesWidget(),
+            Container(width: double.infinity, height: 10, color: Colors.white10,),
+
             MovieHomeDescriptionWidget(),
           ],
         )

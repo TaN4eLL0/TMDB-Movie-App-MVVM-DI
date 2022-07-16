@@ -1,60 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/resources/resources.dart';
+import 'package:movieapp/domain/api_client/image_downloader.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
 import 'package:provider/provider.dart';
 
-class MovieHomeSeriesWidget extends StatefulWidget {
-  const MovieHomeSeriesWidget({Key? key}) : super(key: key);
+class MovieHomeUpcomingWidget extends StatefulWidget {
+  const MovieHomeUpcomingWidget({Key? key}) : super(key: key);
 
   @override
-  State<MovieHomeSeriesWidget> createState() => _MovieHomeSeriesWidgetState();
+  State<MovieHomeUpcomingWidget> createState() =>
+      _MovieHomeUpcomingWidgetState();
 }
 
-class _MovieHomeSeriesWidgetState extends State<MovieHomeSeriesWidget> {
+class _MovieHomeUpcomingWidgetState extends State<MovieHomeUpcomingWidget> {
   @override
   void didChangeDependencies() {
-    context.read<MovieHomeUpcomingViewModel>().loadActorsPopular();
+    context.read<MovieHomeUpcomingViewModel>().loadUpcomingMovies();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const _ActorBuilderWidget();
+    return const _UpcomingBuilderWidget();
   }
 }
 
-class _ActorBuilderWidget extends StatelessWidget {
-  const _ActorBuilderWidget({
+class _UpcomingBuilderWidget extends StatelessWidget {
+  const _UpcomingBuilderWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<MovieHomeUpcomingViewModel>().listActor;
+    final model = context.watch<MovieHomeUpcomingViewModel>();
     return SizedBox(
       height: 300,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: model.length,
         itemExtent: 160,
+        itemCount: model.movies.length,
         itemBuilder: (BuildContext context, int index) {
-          return _ActorDetailsWidget(index: index);
+          return _UpcomingDetailsWidget(index: index);
         },
       ),
     );
   }
 }
 
-class _ActorDetailsWidget extends StatelessWidget {
+class _UpcomingDetailsWidget extends StatelessWidget {
   final int index;
-  const _ActorDetailsWidget({
-    Key? key, required this.index,
+
+  const _UpcomingDetailsWidget({
+    Key? key,
+    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final model = context.read<MovieHomeUpcomingViewModel>();
-    final actor = model.listActor[index];
+    final movie = model.movies[index];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Stack(
@@ -79,30 +82,36 @@ class _ActorDetailsWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image(image: AssetImage(AppImages.peakyblinders),),
-                    SizedBox(height: 9),
+                    if (movie.posterPath != null)
+                      Image.network(
+                        ImageDownloader.imageUrl(movie.posterPath!),
+                        width: double.infinity,
+                        height: 184,
+                        fit: BoxFit.cover,
+                      ),
+                    const SizedBox(height: 9),
                     Text(
-                      actor.name,
+                      movie.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 9),
+                    const SizedBox(height: 9),
                     Text(
-                      'ddd',
+                      model.stringFromDate(movie.releaseDate),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      maxLines: 1,
-                      style: TextStyle(
+                      maxLines: 2,
+                      style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     // Text(
                     //   movie.overview,
                     //   maxLines: 3,

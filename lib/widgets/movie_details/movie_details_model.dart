@@ -44,10 +44,14 @@ class MovieDetailsNameData {
   });
 }
 
-class MovieDetailsTrailerData {
+class MovieDetailsScorerData {
+  final double voteAverage;
   final String? trailerKey;
 
-  MovieDetailsTrailerData({this.trailerKey});
+  MovieDetailsScorerData({
+    required this.voteAverage,
+    this.trailerKey,
+  });
 }
 
 class MovieDetailsPeopleData {
@@ -82,7 +86,7 @@ class MovieDetailsData {
     name: '',
     year: '',
   );
-  MovieDetailsTrailerData trailerData = MovieDetailsTrailerData();
+  MovieDetailsScorerData scoreData = MovieDetailsScorerData(voteAverage: 0);
   String summary = '';
   List<List<MovieDetailsPeopleData>> peopleData =
       const <List<MovieDetailsPeopleData>>[];
@@ -154,7 +158,11 @@ class MovieDetailsModel extends ChangeNotifier {
     final videos = details.videos.results
         .where((video) => video.type == 'Trailer' && video.site == 'YouTube');
     final trailerKey = videos.isNotEmpty == true ? videos.first.key : null;
-    data.trailerData = MovieDetailsTrailerData(trailerKey: trailerKey);
+    final voteAverage = details.voteAverage;
+    data.scoreData = MovieDetailsScorerData(
+      trailerKey: trailerKey,
+      voteAverage: voteAverage * 10,
+    );
     data.summary = makeSummary(details);
     data.peopleData = makePeopleData(details);
     data.actorsData = details.credits.cast

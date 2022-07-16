@@ -21,6 +21,7 @@ import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:movieapp/widgets/movie_details/movie_details_widget.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_widget.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_widget.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_widget.dart';
@@ -103,6 +104,10 @@ class _DIContainer {
   MovieFavoriteViewModel _makeMovieFavoriteViewModel() => MovieFavoriteViewModel(
       loadFavoriteMovie: _makeMovieService(),
   );
+
+  MovieHomeUpcomingViewModel _makeMovieHomeUpcomingViewModel() => MovieHomeUpcomingViewModel(
+    loadService: _makeMovieService(),
+  );
 }
 
 class ScreenFactoryDefault implements ScreenFactory {
@@ -151,8 +156,19 @@ class ScreenFactoryDefault implements ScreenFactory {
 
   @override
   Widget makeMovieHome() {
-    return const MovieHomeWidget();
+    return ChangeNotifierProvider(
+      create: (_) => _diContainer._makeMovieHomeUpcomingViewModel(),
+      child: const MovieHomeWidget(),
+    );
   }
+
+  // @override
+  // Widget makeMovieUpcoming() {
+  //   return ChangeNotifierProvider(
+  //     create: (_) => _diContainer._makeMovieHomeUpcomingViewModel(),
+  //     child: const MovieHomeUpcomingWidget(),
+  //   );
+  // }
 
   @override
   Widget makeMovieList() {
@@ -170,10 +186,5 @@ class ScreenFactoryDefault implements ScreenFactory {
     );
   }
 
-  Widget makeUpdateMovieFavorite() {
-    return ChangeNotifierProvider(
-      create: (_) => _diContainer._makeMovieFavoriteViewModel(),
-      child: MainScreenWidget(screenFactory: this),
-    );
-  }
+  //
 }

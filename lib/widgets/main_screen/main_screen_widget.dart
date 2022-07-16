@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 import 'package:movieapp/navigation/main_navigation.dart';
 import 'package:movieapp/widgets/main_screen/main_screen_view_model.dart';
-import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
 import 'package:provider/provider.dart';
 
 class MainScreenWidget extends StatefulWidget {
@@ -18,7 +17,7 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
-  int _selectedTab = 1;
+  int _selectedTab = 0;
 
   void onSelectedTab(int index) {
     if (_selectedTab == index) return;
@@ -33,6 +32,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   Widget build(BuildContext context) {
     final model = context.read<MainScreenViewModel>();
     return Scaffold(
+      backgroundColor: Colors.black38,
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -45,7 +45,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: IndexedStack(
+      body: LazyLoadIndexedStack(
         index: _selectedTab,
         children: [
           widget.screenFactory.makeMovieHome(),

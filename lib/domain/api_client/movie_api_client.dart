@@ -1,10 +1,21 @@
 import 'package:movieapp/configuration/configuration.dart';
 import 'package:movieapp/domain/api_client/network_client.dart';
+import 'package:movieapp/domain/entity/actor_popular.dart';
 import 'package:movieapp/domain/entity/movie_details.dart';
 import 'package:movieapp/domain/entity/movie_favorite_response.dart';
+import 'package:movieapp/domain/entity/movie_upcoming_response.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
 
 abstract class MovieApiClient {
+
+  Future<ActorPopular> actorPopular(
+      String apiKey,
+      );
+
+  Future<MovieUpcomingResponse> upcomingMovies(
+      String apiKey,
+      );
+
   Future<MovieFavoriteResponse> favoriteMovie(
     int accountId,
     String apiKey,
@@ -41,11 +52,30 @@ class MovieApiClientDefault implements MovieApiClient {
   const MovieApiClientDefault(this.networkClient);
 
   @override
+  Future<MovieUpcomingResponse> upcomingMovies(
+      String apiKey,
+      ) async {
+    MovieUpcomingResponse parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = MovieUpcomingResponse.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = networkClient.get(
+      '/movie/upcoming',
+      parser,
+      <String, dynamic>{
+        'api_key': apiKey,
+      },
+    );
+    return result;
+  }
+
+  @override
   Future<MovieFavoriteResponse> favoriteMovie(
     int accountId,
     String apiKey,
     String sessionId,
-    // int page,
   ) async {
     MovieFavoriteResponse parser(dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
@@ -110,6 +140,26 @@ class MovieApiClientDefault implements MovieApiClient {
         'language': locale,
         'query': query,
         'include_adult': true.toString(),
+      },
+    );
+    return result;
+  }
+
+  @override
+  Future<ActorPopular> actorPopular(
+      String apiKey,
+      ) async {
+    ActorPopular parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = ActorPopular.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = networkClient.get(
+      '/person/popular',
+      parser,
+      <String, dynamic>{
+        'api_key': Configuration.apiKey,
       },
     );
     return result;
