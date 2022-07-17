@@ -21,6 +21,7 @@ import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:movieapp/widgets/movie_details/movie_details_widget.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_widget.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_widget.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
@@ -108,6 +109,10 @@ class _DIContainer {
   MovieHomeUpcomingViewModel _makeMovieHomeUpcomingViewModel() => MovieHomeUpcomingViewModel(
     loadService: _makeMovieService(),
   );
+
+  MovieHomeActorViewModel _makeMovieHomeActorViewModel() => MovieHomeActorViewModel(
+    loadActor: _makeMovieService(),
+  );
 }
 
 class ScreenFactoryDefault implements ScreenFactory {
@@ -155,22 +160,6 @@ class ScreenFactoryDefault implements ScreenFactory {
   }
 
   @override
-  Widget makeMovieHome() {
-    return ChangeNotifierProvider(
-      create: (_) => _diContainer._makeMovieHomeUpcomingViewModel(),
-      child: const MovieHomeWidget(),
-    );
-  }
-
-  // @override
-  // Widget makeMovieUpcoming() {
-  //   return ChangeNotifierProvider(
-  //     create: (_) => _diContainer._makeMovieHomeUpcomingViewModel(),
-  //     child: const MovieHomeUpcomingWidget(),
-  //   );
-  // }
-
-  @override
   Widget makeMovieList() {
     return ChangeNotifierProvider(
       create: (_) => _diContainer._makeMovieListViewModel(),
@@ -186,5 +175,22 @@ class ScreenFactoryDefault implements ScreenFactory {
     );
   }
 
-  //
+  @override
+  Widget makeMovieHome() {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => _diContainer._makeMovieHomeUpcomingViewModel()),
+        ChangeNotifierProvider(create: (_) => _diContainer._makeMovieHomeActorViewModel()),
+      ],
+      child: const MovieHomeWidget(),
+    );
+  }
+
+  // @override
+  // Widget makeMovieActor() {
+  //   return ChangeNotifierProvider(
+  //     create: (_) => _diContainer._makeMovieHomeActorViewModel(),
+  //     child: const MovieHomeWidget(),
+  //   );
+  // }
 }

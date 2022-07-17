@@ -46,6 +46,7 @@ abstract class MovieApiClient {
   );
 }
 
+
 class MovieApiClientDefault implements MovieApiClient {
   final NetworkClient networkClient;
 

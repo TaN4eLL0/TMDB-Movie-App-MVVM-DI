@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/resources/resources.dart';
-import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
+import 'package:movieapp/domain/api_client/image_downloader.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:provider/provider.dart';
 
 class MovieHomeSeriesWidget extends StatefulWidget {
@@ -13,7 +13,7 @@ class MovieHomeSeriesWidget extends StatefulWidget {
 class _MovieHomeSeriesWidgetState extends State<MovieHomeSeriesWidget> {
   @override
   void didChangeDependencies() {
-    context.read<MovieHomeUpcomingViewModel>().loadActorsPopular();
+    context.read<MovieHomeActorViewModel>().loadActorsPopular();
     super.didChangeDependencies();
   }
 
@@ -30,15 +30,15 @@ class _ActorBuilderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<MovieHomeUpcomingViewModel>().listActor;
+    final model = context.watch<MovieHomeActorViewModel>();
     return SizedBox(
       height: 300,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: model.length,
+        itemCount: model.actor.length,
         itemExtent: 160,
         itemBuilder: (BuildContext context, int index) {
-          return _ActorDetailsWidget(index: index);
+          return _ActorDetailsWidget(actorIndex: index);
         },
       ),
     );
@@ -46,15 +46,15 @@ class _ActorBuilderWidget extends StatelessWidget {
 }
 
 class _ActorDetailsWidget extends StatelessWidget {
-  final int index;
+  final int actorIndex;
   const _ActorDetailsWidget({
-    Key? key, required this.index,
+    Key? key, required this.actorIndex,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MovieHomeUpcomingViewModel>();
-    final actor = model.listActor[index];
+    final model = context.read<MovieHomeActorViewModel>();
+    final actor = model.actor[actorIndex];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Stack(
@@ -79,21 +79,27 @@ class _ActorDetailsWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image(image: AssetImage(AppImages.peakyblinders),),
-                    SizedBox(height: 9),
+                    if (actor.profilePath != null)
+                      Image.network(
+                        ImageDownloader.imageUrl(actor.profilePath),
+                        width: double.infinity,
+                        height: 184,
+                        fit: BoxFit.cover,
+                      ),
+                    const SizedBox(height: 9),
                     Text(
                       actor.name,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 9),
-                    Text(
-                      'ddd',
+                    const SizedBox(height: 9),
+                    const Text(
+                      'Acting',
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       maxLines: 1,
@@ -102,7 +108,7 @@ class _ActorDetailsWidget extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     // Text(
                     //   movie.overview,
                     //   maxLines: 3,

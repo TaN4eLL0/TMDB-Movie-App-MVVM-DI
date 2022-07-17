@@ -11,6 +11,7 @@ abstract class ScreenFactory {
   Widget makeMovieHome();
   Widget makeMovieList();
   Widget makeMovieFavorite();
+  // Widget makeMovieActor();
   // Widget makeMovieUpcoming();
 }
 

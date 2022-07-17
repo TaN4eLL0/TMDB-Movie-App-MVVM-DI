@@ -9,6 +9,7 @@ import 'package:movieapp/domain/entity/popular_movie_response.dart';
 import 'package:movieapp/domain/locale_entity/movie_details_locale.dart';
 import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
 
@@ -17,7 +18,8 @@ class MovieService
         MovieDetailsModelMovieProvider,
         MovieListViewModelMovieProvider,
         MovieFavoriteViewModelLoadFavoriteMovie,
-        MovieUpcomingViewModelLoadUpcoming {
+        MovieUpcomingViewModelLoadUpcoming,
+        MovieUpcomingViewModelLoadActor {
   final MovieApiClient movieApiClient;
   final AccountApiClient accountApiClient;
   final SessionDataProvider sessionDataProvider;
@@ -27,6 +29,13 @@ class MovieService
     required this.accountApiClient,
     required this.sessionDataProvider,
   });
+
+  @override
+  Future<ActorPopular> loadActor() async =>
+      movieApiClient.actorPopular(
+
+        Configuration.apiKey,
+      );
 
   @override
   Future<MovieUpcomingResponse> upcomingMovie() async =>
@@ -59,12 +68,6 @@ class MovieService
     return await movieApiClient.favoriteMovie(
         accountId!, Configuration.apiKey, sessionId!);
   }
-
-  @override
-  Future<ActorPopular> loadActor() async =>
-      movieApiClient.actorPopular(
-        Configuration.apiKey,
-      );
 
   @override
   Future<MovieDetailsLocale> loadDetails({
