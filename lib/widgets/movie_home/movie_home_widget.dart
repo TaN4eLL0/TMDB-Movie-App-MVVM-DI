@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movieapp/widgets/movie_home/movie_home_actor_widget.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_header_widget.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_widget.dart';
 import 'movie_home_description_widget.dart';
-import 'movie_home_series_widget.dart';
 
 class MovieHomeWidget extends StatefulWidget {
   const MovieHomeWidget({Key? key}) : super(key: key);
@@ -21,9 +21,9 @@ class _MovieHomeWidgetState extends State<MovieHomeWidget> {
             const MovieHomeHeaderWidget(),
             Container(width: double.infinity, height: 10, color: Colors.white10,),
             const MovieHomeUpcomingWidget(),
-            Container(width: double.infinity, height: 10, color: Colors.white10,),
+            // Container(width: double.infinity, height: 10, color: Colors.white10,),
 
-            const MovieHomeSeriesWidget(),
+            const MovieHomeActorWidget(),
             Container(width: double.infinity, height: 10, color: Colors.white10,),
 
             MovieHomeDescriptionWidget(),

@@ -31,6 +31,31 @@ class _UpcomingBuilderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        Padding(
+          padding: EdgeInsets.only(top: 25, bottom: 10, left: 10),
+          child: Text(
+            'Watch these films in the cinema:',
+            maxLines: 2,
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              fontSize: 28, fontWeight: FontWeight.w600, color: Colors.white70,),
+          ),
+        ),
+        _UpcomingListViewWidget(),
+      ],
+    );
+  }
+}
+
+class _UpcomingListViewWidget extends StatelessWidget {
+  const _UpcomingListViewWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     final model = context.watch<MovieHomeUpcomingViewModel>();
     return SizedBox(
       height: 300,

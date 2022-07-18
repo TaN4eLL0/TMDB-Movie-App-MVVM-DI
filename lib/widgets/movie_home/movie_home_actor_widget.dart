@@ -3,14 +3,14 @@ import 'package:movieapp/domain/api_client/image_downloader.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:provider/provider.dart';
 
-class MovieHomeSeriesWidget extends StatefulWidget {
-  const MovieHomeSeriesWidget({Key? key}) : super(key: key);
+class MovieHomeActorWidget extends StatefulWidget {
+  const MovieHomeActorWidget({Key? key}) : super(key: key);
 
   @override
-  State<MovieHomeSeriesWidget> createState() => _MovieHomeSeriesWidgetState();
+  State<MovieHomeActorWidget> createState() => _MovieHomeActorWidgetState();
 }
 
-class _MovieHomeSeriesWidgetState extends State<MovieHomeSeriesWidget> {
+class _MovieHomeActorWidgetState extends State<MovieHomeActorWidget> {
   @override
   void didChangeDependencies() {
     context.read<MovieHomeActorViewModel>().loadActorsPopular();
@@ -25,6 +25,34 @@ class _MovieHomeSeriesWidgetState extends State<MovieHomeSeriesWidget> {
 
 class _ActorBuilderWidget extends StatelessWidget {
   const _ActorBuilderWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: const [
+            Padding(
+              padding: EdgeInsets.only(top: 25, bottom: 10, left: 10),
+              child: Text(
+              'Popular actor today:',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                fontSize: 28, fontWeight: FontWeight.w600, color: Colors.white70,),
+              ),
+            ),
+          ],
+        ),
+        const _ActorListViewWidget(),
+      ],
+    );
+  }
+}
+
+class _ActorListViewWidget extends StatelessWidget {
+  const _ActorListViewWidget({
     Key? key,
   }) : super(key: key);
 
@@ -47,14 +75,30 @@ class _ActorBuilderWidget extends StatelessWidget {
 
 class _ActorDetailsWidget extends StatelessWidget {
   final int actorIndex;
+
   const _ActorDetailsWidget({
-    Key? key, required this.actorIndex,
+    Key? key,
+    required this.actorIndex,
   }) : super(key: key);
+
+  // int indexMovie(BuildContext context) {
+  //   final model = context.read<MovieHomeActorViewModel>();
+  //   final actor = model.actor[actorIndex];
+  //   final length = actor.knownFor.length;
+  //   // final length = context.read<MovieHomeActorViewModel>().actor.[actorIndex].length;
+  //   int index = 0;
+  //   for (int i = 0; i <= length; i++) {
+  //     index += i;
+  //   }
+  //   return index;
+  // }
 
   @override
   Widget build(BuildContext context) {
+    // final indexMovies = indexMovie(context);
     final model = context.read<MovieHomeActorViewModel>();
     final actor = model.actor[actorIndex];
+    final title = actor.knownFor[0].title ?? '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Stack(
@@ -87,26 +131,32 @@ class _ActorDetailsWidget extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     const SizedBox(height: 9),
-                    Text(
-                      actor.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        actor.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                     const SizedBox(height: 9),
-                    const Text(
-                      'Acting',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                     const SizedBox(height: 5),
                     // Text(
