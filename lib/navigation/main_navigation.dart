@@ -4,17 +4,23 @@ import 'package:movieapp/widgets/my_app.dart';
 
 abstract class ScreenFactory {
   Widget makeLoader();
-  Widget makeAuth();
-  Widget makeMainScreen();
-  Widget movieDetails(int movieId);
-  Widget movieTrailer(String youtubeKey);
-  Widget makeMovieHome();
-  Widget makeMovieList();
-  Widget makeMovieFavorite();
-  // Widget makeMovieActor();
-  // Widget makeMovieUpcoming();
-}
 
+  Widget makeAuth();
+
+  Widget makeMainScreen();
+
+  Widget movieDetails(int movieId);
+
+  Widget movieTrailer(String youtubeKey);
+
+  Widget makeMovieHome();
+
+  Widget makeMovieList();
+
+  Widget makeMovieFavorite();
+
+  Widget makeActorDetails(int personId);
+}
 
 class MainNavigation implements MyAppNavigation {
   final ScreenFactory screenFactory;
@@ -22,11 +28,13 @@ class MainNavigation implements MyAppNavigation {
   const MainNavigation(this.screenFactory);
 
   @override
-  Map<String, Widget Function(BuildContext)> get routes =>{
-    MainNavigationRouteNames.loaderWidget: (_) => screenFactory.makeLoader(),
-    MainNavigationRouteNames.auth: (_) => screenFactory.makeAuth(),
-    MainNavigationRouteNames.mainScreen: (_) => screenFactory.makeMainScreen(),
-  };
+  Map<String, Widget Function(BuildContext)> get routes => {
+        MainNavigationRouteNames.loaderWidget: (_) =>
+            screenFactory.makeLoader(),
+        MainNavigationRouteNames.auth: (_) => screenFactory.makeAuth(),
+        MainNavigationRouteNames.mainScreen: (_) =>
+            screenFactory.makeMainScreen(),
+      };
 
   @override
   Route<Object> onGenerateRoute(RouteSettings settings) {
@@ -42,6 +50,12 @@ class MainNavigation implements MyAppNavigation {
         final youtubeKey = arguments is String ? arguments : '';
         return MaterialPageRoute(
           builder: (_) => screenFactory.movieTrailer(youtubeKey),
+        );
+      case MainNavigationRouteNames.actorDetails:
+        final arguments = settings.arguments;
+        final personId = arguments is int ? arguments : 0;
+        return MaterialPageRoute(
+          builder: (_) => screenFactory.makeActorDetails(personId),
         );
       default:
         const widget = Text('Navigation error!');

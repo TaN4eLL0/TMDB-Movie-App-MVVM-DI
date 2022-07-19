@@ -11,6 +11,8 @@ import 'package:movieapp/domain/services/movie_service.dart';
 import 'package:movieapp/main.dart';
 import 'package:movieapp/navigation/main_navigation.dart';
 import 'package:movieapp/navigation/main_navigation_actions.dart';
+import 'package:movieapp/widgets/actor_details/actor_details_view_model.dart';
+import 'package:movieapp/widgets/actor_details/actor_details_widget.dart';
 import 'package:movieapp/widgets/auth/auth_model.dart';
 import 'package:movieapp/widgets/auth/auth_widget.dart';
 import 'package:movieapp/widgets/loader_widget/loader_view_model.dart';
@@ -102,17 +104,26 @@ class _DIContainer {
         movieProvider: _makeMovieService(),
       );
 
-  MovieFavoriteViewModel _makeMovieFavoriteViewModel() => MovieFavoriteViewModel(
-      loadFavoriteMovie: _makeMovieService(),
-  );
+  MovieFavoriteViewModel _makeMovieFavoriteViewModel() =>
+      MovieFavoriteViewModel(
+        loadFavoriteMovie: _makeMovieService(),
+      );
 
-  MovieHomeUpcomingViewModel _makeMovieHomeUpcomingViewModel() => MovieHomeUpcomingViewModel(
-    loadService: _makeMovieService(),
-  );
+  MovieHomeUpcomingViewModel _makeMovieHomeUpcomingViewModel() =>
+      MovieHomeUpcomingViewModel(
+        loadService: _makeMovieService(),
+      );
 
-  MovieHomeActorViewModel _makeMovieHomeActorViewModel() => MovieHomeActorViewModel(
-    loadActor: _makeMovieService(),
-  );
+  MovieHomeActorViewModel _makeMovieHomeActorViewModel() =>
+      MovieHomeActorViewModel(
+        loadActor: _makeMovieService(),
+      );
+
+  ActorDetailsViewModel _makeActorDetailsViewModel(int personId) =>
+      ActorDetailsViewModel(
+        personId,
+        actorProvider: _makeMovieService(),
+      );
 }
 
 class ScreenFactoryDefault implements ScreenFactory {
@@ -179,18 +190,20 @@ class ScreenFactoryDefault implements ScreenFactory {
   Widget makeMovieHome() {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => _diContainer._makeMovieHomeUpcomingViewModel()),
-        ChangeNotifierProvider(create: (_) => _diContainer._makeMovieHomeActorViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => _diContainer._makeMovieHomeUpcomingViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => _diContainer._makeMovieHomeActorViewModel()),
       ],
       child: const MovieHomeWidget(),
     );
   }
 
-  // @override
-  // Widget makeMovieActor() {
-  //   return ChangeNotifierProvider(
-  //     create: (_) => _diContainer._makeMovieHomeActorViewModel(),
-  //     child: const MovieHomeWidget(),
-  //   );
-  // }
+  @override
+  Widget makeActorDetails(int personId) {
+    return ChangeNotifierProvider(
+      create: (_) => _diContainer._makeActorDetailsViewModel(personId),
+      child: const ActorDetailsWidget(),
+    );
+  }
 }

@@ -7,7 +7,7 @@ part of 'actor_popular_results.dart';
 // **************************************************************************
 
 Results _$ResultsFromJson(Map<String, dynamic> json) => Results(
-      profilePath: json['profile_path'] as String,
+      profilePath: json['profile_path'] as String?,
       adult: json['adult'] as bool,
       id: json['id'] as int,
       knownFor: (json['known_for'] as List<dynamic>)

@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromRGBO(3, 37, 65, 1),
+          backgroundColor: Colors.black,
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color.fromRGBO(3, 37, 65, 1),
+          backgroundColor: Colors.black,
           selectedItemColor: Colors.white,
         ),
       ),

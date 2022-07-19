@@ -21,12 +21,8 @@ class _MovieHomeWidgetState extends State<MovieHomeWidget> {
             const MovieHomeHeaderWidget(),
             Container(width: double.infinity, height: 10, color: Colors.white10,),
             const MovieHomeUpcomingWidget(),
-            // Container(width: double.infinity, height: 10, color: Colors.white10,),
-
             const MovieHomeActorWidget(),
-            Container(width: double.infinity, height: 10, color: Colors.white10,),
-
-            MovieHomeDescriptionWidget(),
+            const MovieHomeDescriptionWidget(),
           ],
         )
       ],

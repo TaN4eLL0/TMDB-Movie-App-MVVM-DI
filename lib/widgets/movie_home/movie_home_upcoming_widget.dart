@@ -137,15 +137,6 @@ class _UpcomingDetailsWidget extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     const SizedBox(height: 5),
-                    // Text(
-                    //   movie.overview,
-                    //   maxLines: 3,
-                    //   textAlign: TextAlign.center,
-                    //   style: const TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 12,
-                    //       fontWeight: FontWeight.w400),
-                    // ),
                   ],
                 ),
               ],
@@ -155,7 +146,7 @@ class _UpcomingDetailsWidget extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () => model.upcomingOnMovieTap(context, index),
             ),
           )
         ],

@@ -5,8 +5,6 @@ import 'package:movieapp/Library/Widgets/localized_model.dart';
 import 'package:movieapp/Library/Widgets/paginator.dart';
 import 'package:movieapp/domain/entity/movie.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
-import 'package:movieapp/domain/services/movie_service.dart';
-import 'package:movieapp/navigation/main_navigation.dart';
 import 'package:movieapp/navigation/main_navigation_route_names.dart';
 
 class MovieListRowData {
@@ -60,7 +58,7 @@ class MovieListViewModel extends ChangeNotifier {
           await movieProvider.popularMovie(page, _localeStorage.localeTag);
       return PaginatorLoadResult(
         data: result.movies,
-        currentPage: result.page,
+        currentPage: result.page!,
         totalPage: result.totalPages,
       );
     });
@@ -72,7 +70,7 @@ class MovieListViewModel extends ChangeNotifier {
       );
       return PaginatorLoadResult(
         data: result.movies,
-        currentPage: result.page,
+        currentPage: result.page!,
         totalPage: result.totalPages,
       );
     });

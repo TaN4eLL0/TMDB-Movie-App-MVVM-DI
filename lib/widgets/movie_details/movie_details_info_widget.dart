@@ -201,7 +201,7 @@ class _MovieGenresWidget extends StatelessWidget {
     var summary =
         context.select((MovieDetailsModel model) => model.data.summary);
     return ColoredBox(
-      color: const Color.fromRGBO(22, 21, 25, 1),
+      color: const Color.fromRGBO(15, 12, 12, 1),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Text(

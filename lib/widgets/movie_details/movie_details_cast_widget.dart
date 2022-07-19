@@ -70,45 +70,56 @@ class _ActorListItemWidget extends StatelessWidget {
     final profilePath = actor.profilePath;
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black.withOpacity(0.2)),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          clipBehavior: Clip.hardEdge,
-          child: Column(
-            children: [
-              if (profilePath != null)
-                Image.network(ImageDownloader.imageUrl(profilePath)),
+      child: Stack(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              border: Border.all(color: Colors.black.withOpacity(0.2)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              clipBehavior: Clip.hardEdge,
+              child: Column(
+                children: [
+                  if (profilePath != null)
+                    Image.network(ImageDownloader.imageUrl(profilePath)),
 
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      actor.name,
-                      maxLines: 2,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 12),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          actor.name,
+                          maxLines: 2,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 13, color: Colors.white70),
+                        ),
+                        Text(
+                          actor.character,
+                          maxLines: 2,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 11,
+                              color: Colors.grey),
+                        ),
+                      ],
                     ),
-                    Text(
-                      actor.character,
-                      maxLines: 2,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10,
-                          color: Colors.grey),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () => model.onActorMovieTap(context, actorIndex),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -81,21 +81,8 @@ class _ActorDetailsWidget extends StatelessWidget {
     required this.actorIndex,
   }) : super(key: key);
 
-  // int indexMovie(BuildContext context) {
-  //   final model = context.read<MovieHomeActorViewModel>();
-  //   final actor = model.actor[actorIndex];
-  //   final length = actor.knownFor.length;
-  //   // final length = context.read<MovieHomeActorViewModel>().actor.[actorIndex].length;
-  //   int index = 0;
-  //   for (int i = 0; i <= length; i++) {
-  //     index += i;
-  //   }
-  //   return index;
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // final indexMovies = indexMovie(context);
     final model = context.read<MovieHomeActorViewModel>();
     final actor = model.actor[actorIndex];
     final title = actor.knownFor[0].title ?? '';
@@ -125,7 +112,7 @@ class _ActorDetailsWidget extends StatelessWidget {
                   children: [
                     if (actor.profilePath != null)
                       Image.network(
-                        ImageDownloader.imageUrl(actor.profilePath),
+                        ImageDownloader.imageUrl(actor.profilePath!),
                         width: double.infinity,
                         height: 184,
                         fit: BoxFit.cover,
@@ -159,15 +146,6 @@ class _ActorDetailsWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // Text(
-                    //   movie.overview,
-                    //   maxLines: 3,
-                    //   textAlign: TextAlign.center,
-                    //   style: const TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 12,
-                    //       fontWeight: FontWeight.w400),
-                    // ),
                   ],
                 ),
               ],
@@ -177,7 +155,7 @@ class _ActorDetailsWidget extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: () => model.onActorTap(context, actorIndex),
             ),
           )
         ],

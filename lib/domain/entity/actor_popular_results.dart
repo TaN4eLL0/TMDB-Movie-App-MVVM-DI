@@ -5,7 +5,7 @@ part 'actor_popular_results.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Results {
-  final String profilePath;
+  final String? profilePath;
   final bool adult;
   final int id;
   final List<KnownFor> knownFor;

@@ -5,6 +5,7 @@ import 'package:movieapp/domain/api_client/api_client_exception.dart';
 import 'package:movieapp/domain/entity/movie_details.dart';
 import 'package:movieapp/domain/locale_entity/movie_details_locale.dart';
 import 'package:movieapp/navigation/main_navigation_actions.dart';
+import 'package:movieapp/navigation/main_navigation_route_names.dart';
 
 class MovieDetailsPosterData {
   final String? posterPath;
@@ -65,11 +66,13 @@ class MovieDetailsPeopleData {
 }
 
 class MovieDetailsActorData {
+  final int id;
   final String name;
   final String character;
   final String? profilePath;
 
   MovieDetailsActorData({
+    required this.id,
     required this.name,
     required this.character,
     this.profilePath,
@@ -89,7 +92,7 @@ class MovieDetailsData {
   MovieDetailsScorerData scoreData = MovieDetailsScorerData(voteAverage: 0);
   String summary = '';
   List<List<MovieDetailsPeopleData>> peopleData =
-      const <List<MovieDetailsPeopleData>>[];
+  const <List<MovieDetailsPeopleData>>[];
   List<MovieDetailsActorData> actorsData = const <MovieDetailsActorData>[];
 }
 
@@ -119,8 +122,7 @@ class MovieDetailsModel extends ChangeNotifier {
   final _localeStorage = LocalizedModelStorage();
   late DateFormat _dateFormat;
 
-  MovieDetailsModel(
-    this.movieId, {
+  MovieDetailsModel(this.movieId, {
     required this.movieProvider,
     required this.logoutProvider,
     required this.navigationActions,
@@ -166,11 +168,13 @@ class MovieDetailsModel extends ChangeNotifier {
     data.summary = makeSummary(details);
     data.peopleData = makePeopleData(details);
     data.actorsData = details.credits.cast
-        .map((e) => MovieDetailsActorData(
-              name: e.name,
-              character: e.character,
-              profilePath: e.profilePath,
-            ))
+        .map((e) =>
+        MovieDetailsActorData(
+          name: e.name,
+          character: e.character,
+          profilePath: e.profilePath,
+          id: e.id,
+        ))
         .toList();
 
     notifyListeners();
@@ -178,10 +182,11 @@ class MovieDetailsModel extends ChangeNotifier {
 
   List<List<MovieDetailsPeopleData>> makePeopleData(MovieDetails details) {
     var crew = details.credits.crew
-        .map((e) => MovieDetailsPeopleData(
-              name: e.name,
-              job: e.job,
-            ))
+        .map((e) =>
+        MovieDetailsPeopleData(
+          name: e.name,
+          job: e.job,
+        ))
         .toList();
     crew = crew.length > 4 ? crew.sublist(0, 4) : crew;
     var crewChunks = <List<MovieDetailsPeopleData>>[];
@@ -244,10 +249,16 @@ class MovieDetailsModel extends ChangeNotifier {
     }
   }
 
-  void _handleApiClientException(
-    ApiClientException exception,
-    BuildContext context,
-  ) async {
+  void onActorMovieTap(BuildContext context, int index) {
+    final id = data.actorsData[index].id;
+    Navigator.of(context).pushNamed(
+      MainNavigationRouteNames.actorDetails,
+      arguments: id,
+    );
+  }
+
+  void _handleApiClientException(ApiClientException exception,
+      BuildContext context,) async {
     switch (exception.type) {
       case ApiClientExceptionType.sessionExpired:
         logoutProvider.logout();

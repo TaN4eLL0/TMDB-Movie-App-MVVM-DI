@@ -1,5 +1,6 @@
 import 'package:movieapp/configuration/configuration.dart';
 import 'package:movieapp/domain/api_client/network_client.dart';
+import 'package:movieapp/domain/entity/actor_details.dart';
 import 'package:movieapp/domain/entity/actor_popular.dart';
 import 'package:movieapp/domain/entity/movie_details.dart';
 import 'package:movieapp/domain/entity/movie_favorite_response.dart';
@@ -7,6 +8,11 @@ import 'package:movieapp/domain/entity/movie_upcoming_response.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
 
 abstract class MovieApiClient {
+
+  Future<ActorDetails> actorDetails(
+      int personId,
+      String apiKey,
+      );
 
   Future<ActorPopular> actorPopular(
       String apiKey,
@@ -51,6 +57,28 @@ class MovieApiClientDefault implements MovieApiClient {
   final NetworkClient networkClient;
 
   const MovieApiClientDefault(this.networkClient);
+
+  @override
+  Future<ActorDetails> actorDetails(
+      int personId,
+      String apiKey,
+      ) async {
+    ActorDetails parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = ActorDetails.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = networkClient.get(
+      '/person/$personId',
+      parser,
+      <String, dynamic>{
+        'append_to_response': 'movie_credits',
+        'api_key': apiKey,
+      },
+    );
+    return result;
+  }
 
   @override
   Future<MovieUpcomingResponse> upcomingMovies(
