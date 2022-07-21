@@ -34,7 +34,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
       backgroundColor: Colors.black38,
       appBar: AppBar(
-        // centerTitle: true,
         title: const Text(
           'MovieApp',
           textAlign: TextAlign.start,
@@ -56,25 +55,23 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
           currentIndex: _selectedTab,
+          unselectedItemColor: Colors.grey,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_filled,
-                color: Colors.white,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.movie_filter_rounded,
-                color: Colors.white,
               ),
               label: 'Films',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.star,
-                color: Colors.white,
               ),
               label: 'Favorites',
             ),

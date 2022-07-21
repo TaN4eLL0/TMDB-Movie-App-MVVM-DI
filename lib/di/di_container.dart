@@ -26,8 +26,9 @@ import 'package:movieapp/widgets/movie_favorites/movie_favorite_widget.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_widget.dart';
-import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
 import 'package:movieapp/widgets/movie_list/movie_list_widget.dart';
+import 'package:movieapp/widgets/movie_list/movie_popular_view_model.dart';
+import 'package:movieapp/widgets/movie_list/movie_rated_view_model.dart';
 import 'package:movieapp/widgets/movie_trailer/movie_trailer_widgets.dart';
 import 'package:movieapp/widgets/my_app.dart';
 import 'package:provider/provider.dart';
@@ -100,9 +101,13 @@ class _DIContainer {
         navigationActions: _mainNavigationActions,
       );
 
-  MovieListViewModel _makeMovieListViewModel() => MovieListViewModel(
+  MoviePopularViewModel _makeMoviePopularViewModel() => MoviePopularViewModel(
         movieProvider: _makeMovieService(),
       );
+
+  MovieRatedViewModel _makeMovieRatedViewModel() => MovieRatedViewModel(
+    movieLoad: _makeMovieService(),
+  );
 
   MovieFavoriteViewModel _makeMovieFavoriteViewModel() =>
       MovieFavoriteViewModel(
@@ -170,13 +175,34 @@ class ScreenFactoryDefault implements ScreenFactory {
     return MovieTrailerWidget(youtubeKey: youtubeKey);
   }
 
+  // @override
+  // Widget makeMoviePopular() {
+  //   return ChangeNotifierProvider(
+  //     create: (_) => _diContainer._makeMoviePopularViewModel(),
+  //     child: const TabBarViewMovieWidget(),
+  //   );
+  // }
+
   @override
   Widget makeMovieList() {
-    return ChangeNotifierProvider(
-      create: (_) => _diContainer._makeMovieListViewModel(),
-      child: const MovieListWidget(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => _diContainer._makeMoviePopularViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => _diContainer._makeMovieRatedViewModel()),
+      ],
+      child: const TabBarViewMovieWidget(),
     );
   }
+
+  // @override
+  // Widget makeMovieRated() {
+  //   return ChangeNotifierProvider(
+  //     create: (_) => _diContainer._makeMovieRatedViewModel(),
+  //     child: const MovieRatedWidget(),
+  //   );
+  // }
 
   @override
   Widget makeMovieFavorite() {

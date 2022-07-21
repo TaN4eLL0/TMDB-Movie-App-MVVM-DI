@@ -15,9 +15,13 @@ abstract class ScreenFactory {
 
   Widget makeMovieHome();
 
-  Widget makeMovieList();
+  // Widget makeMoviePopular();
+
+  // Widget makeMovieRated();
 
   Widget makeMovieFavorite();
+
+  Widget makeMovieList();
 
   Widget makeActorDetails(int personId);
 }

@@ -5,6 +5,7 @@ import 'package:movieapp/domain/data_providers/session_data_provider.dart';
 import 'package:movieapp/domain/entity/actor_details.dart';
 import 'package:movieapp/domain/entity/actor_popular.dart';
 import 'package:movieapp/domain/entity/movie_favorite_response.dart';
+import 'package:movieapp/domain/entity/movie_rated_response.dart';
 import 'package:movieapp/domain/entity/movie_upcoming_response.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
 import 'package:movieapp/domain/locale_entity/movie_details_locale.dart';
@@ -13,16 +14,18 @@ import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_actor_view_model.dart';
 import 'package:movieapp/widgets/movie_home/movie_home_upcoming_view_model.dart';
-import 'package:movieapp/widgets/movie_list/movie_list_model.dart';
+import 'package:movieapp/widgets/movie_list/movie_popular_view_model.dart';
+import 'package:movieapp/widgets/movie_list/movie_rated_view_model.dart';
 
 class MovieService
     implements
         MovieDetailsModelMovieProvider,
-        MovieListViewModelMovieProvider,
+        MoviePopularViewModelMovieProvider,
         MovieFavoriteViewModelLoadFavoriteMovie,
         MovieUpcomingViewModelLoadUpcoming,
         MovieUpcomingViewModelLoadActor,
-        ActorDetailsViewModelLoad {
+        ActorDetailsViewModelLoad,
+        MovieRatedViewModelLoad {
   final MovieApiClient movieApiClient;
   final AccountApiClient accountApiClient;
   final SessionDataProvider sessionDataProvider;
@@ -50,6 +53,24 @@ class MovieService
   @override
   Future<MovieUpcomingResponse> upcomingMovie() async =>
       movieApiClient.upcomingMovies(
+        Configuration.apiKey,
+      );
+
+  @override
+  Future<MovieRatedResponse> ratedMovie(int page, String locale) async =>
+      movieApiClient.ratedMovie(
+        page,
+        locale,
+        Configuration.apiKey,
+      );
+
+  @override
+  Future<MovieRatedResponse> searchMovieRated(
+      int page, String locale, String query) async =>
+      movieApiClient.searchMovieRated(
+        page,
+        locale,
+        query,
         Configuration.apiKey,
       );
 

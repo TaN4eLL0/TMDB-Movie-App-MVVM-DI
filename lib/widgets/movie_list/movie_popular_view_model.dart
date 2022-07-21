@@ -7,14 +7,14 @@ import 'package:movieapp/domain/entity/movie.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
 import 'package:movieapp/navigation/main_navigation_route_names.dart';
 
-class MovieListRowData {
+class MoviePopularRowData {
   final int id;
   final String? posterPath;
   final String title;
   final String releaseDate;
   final String overview;
 
-  MovieListRowData({
+  MoviePopularRowData({
     required this.id,
     required this.posterPath,
     required this.title,
@@ -23,22 +23,22 @@ class MovieListRowData {
   });
 }
 
-abstract class MovieListViewModelMovieProvider {
+abstract class MoviePopularViewModelMovieProvider {
   Future<PopularMovieResponse> popularMovie(int page, String locale);
 
   Future<PopularMovieResponse> searchMovie(
       int page, String locale, String query);
 }
 
-class MovieListViewModel extends ChangeNotifier {
-  final MovieListViewModelMovieProvider movieProvider;
+class MoviePopularViewModel extends ChangeNotifier {
+  final MoviePopularViewModelMovieProvider movieProvider;
   late final Paginator<Movie> _popularMoviePaginator;
   late final Paginator<Movie> _searchMoviePaginator;
   final _localeStorage = LocalizedModelStorage();
 
   Timer? searchDebounce;
 
-  var _movies = <MovieListRowData>[];
+  var _movies = <MoviePopularRowData>[];
   String? _searchQuery;
 
   bool get isSearchMode {
@@ -46,11 +46,11 @@ class MovieListViewModel extends ChangeNotifier {
     return searchQuery != null && searchQuery.isNotEmpty;
   }
 
-  List<MovieListRowData> get movies => List.unmodifiable(_movies);
+  List<MoviePopularRowData> get movies => List.unmodifiable(_movies);
 
   late DateFormat _dateFormat;
 
-  MovieListViewModel({
+  MoviePopularViewModel({
     required this.movieProvider,
   }) {
     _popularMoviePaginator = Paginator<Movie>((page) async {
@@ -100,11 +100,11 @@ class MovieListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  MovieListRowData _makeRowData(Movie movie) {
+  MoviePopularRowData _makeRowData(Movie movie) {
     final releaseDate = movie.releaseDate;
     final releaseDateTitle =
         releaseDate != null ? _dateFormat.format(releaseDate) : '';
-    return MovieListRowData(
+    return MoviePopularRowData(
       id: movie.id,
       title: movie.title,
       releaseDate: releaseDateTitle,

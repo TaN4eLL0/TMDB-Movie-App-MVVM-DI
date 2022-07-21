@@ -4,6 +4,7 @@ import 'package:movieapp/domain/entity/actor_details.dart';
 import 'package:movieapp/domain/entity/actor_popular.dart';
 import 'package:movieapp/domain/entity/movie_details.dart';
 import 'package:movieapp/domain/entity/movie_favorite_response.dart';
+import 'package:movieapp/domain/entity/movie_rated_response.dart';
 import 'package:movieapp/domain/entity/movie_upcoming_response.dart';
 import 'package:movieapp/domain/entity/popular_movie_response.dart';
 
@@ -27,6 +28,19 @@ abstract class MovieApiClient {
     String apiKey,
     String sessionId,
   );
+
+  Future<MovieRatedResponse> ratedMovie(
+      int page,
+      String locale,
+      String apiKey,
+      );
+
+  Future<MovieRatedResponse> searchMovieRated(
+      int page,
+      String locale,
+      String query,
+      String apiKey,
+      );
 
   Future<PopularMovieResponse> popularMovie(
     int page,
@@ -118,6 +132,57 @@ class MovieApiClientDefault implements MovieApiClient {
       <String, dynamic>{
         'api_key': apiKey,
         'session_id': sessionId,
+      },
+    );
+    return result;
+  }
+
+  @override
+  Future<MovieRatedResponse> ratedMovie(
+      int page,
+      String locale,
+      String apiKey,
+      ) async {
+    MovieRatedResponse parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = MovieRatedResponse.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = networkClient.get(
+      '/movie/top_rated',
+      parser,
+      <String, dynamic>{
+        'api_key': apiKey,
+        'page': page.toString(),
+        'language': locale,
+      },
+    );
+    return result;
+  }
+
+  @override
+  Future<MovieRatedResponse> searchMovieRated(
+      int page,
+      String locale,
+      String query,
+      String apiKey,
+      ) async {
+    MovieRatedResponse parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = MovieRatedResponse.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = networkClient.get(
+      '/search/movie',
+      parser,
+      <String, dynamic>{
+        'api_key': apiKey,
+        'page': page.toString(),
+        'language': locale,
+        'query': query,
+        'include_adult': true.toString(),
       },
     );
     return result;
