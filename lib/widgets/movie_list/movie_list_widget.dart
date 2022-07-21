@@ -79,6 +79,7 @@ class _MovieListWidget extends StatelessWidget {
 
 class _MovieListRowWidget extends StatelessWidget {
   final int index;
+
   const _MovieListRowWidget({Key? key, required this.index}) : super(key: key);
 
   @override
@@ -92,7 +93,7 @@ class _MovieListRowWidget extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: const Color.fromRGBO(24, 23, 27, 1),
               border: Border.all(color: Colors.black.withOpacity(0.1)),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: [
@@ -119,7 +120,11 @@ class _MovieListRowWidget extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         movie.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -135,6 +140,11 @@ class _MovieListRowWidget extends StatelessWidget {
                         movie.overview,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),

@@ -34,10 +34,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
       backgroundColor: Colors.black38,
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         title: const Text(
           'MovieApp',
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
         ),
         actions: [
           IconButton(
@@ -54,23 +54,34 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedTab,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie_filter_rounded),
-            label: 'Films',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Favorites',
-          ),
-        ],
-        onTap: onSelectedTab
-      ),
+        backgroundColor: Colors.black,
+          currentIndex: _selectedTab,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_filled,
+                color: Colors.white,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.movie_filter_rounded,
+                color: Colors.white,
+              ),
+              label: 'Films',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.star,
+                color: Colors.white,
+              ),
+              label: 'Favorites',
+            ),
+          ],
+          fixedColor: Colors.white,
+          // selectedItemColor: Colors.white,
+          onTap: onSelectedTab),
     );
   }
 }
