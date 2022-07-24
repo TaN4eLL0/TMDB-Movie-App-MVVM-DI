@@ -85,6 +85,9 @@ class _PosterWidget extends StatelessWidget {
         context.select((MovieDetailsModel model) => model.data.posterData);
     final backDropPath = posterData.backdropPath;
     final posterPath = posterData.posterPath;
+    final model = context.watch<MovieDetailsModel>();
+    final favoriteData =
+        context.select((MovieDetailsModel model) => model.data.favoriteData);
     return AspectRatio(
       aspectRatio: 390 / 219,
       child: Stack(
@@ -100,6 +103,18 @@ class _PosterWidget extends StatelessWidget {
                 ImageDownloader.imageUrl(posterPath),
               ),
             ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: IconButton(
+              onPressed: () {
+                model.toggleFavorite(context);
+              },
+              iconSize: 30,
+              color: Colors.white,
+              icon: Icon(favoriteData.favoriteIcon),
+            ),
+          ),
         ],
       ),
     );
@@ -144,7 +159,8 @@ class _ScoreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var scoreData = context.select((MovieDetailsModel model) => model.data.scoreData);
+    var scoreData =
+        context.select((MovieDetailsModel model) => model.data.scoreData);
     var trailerKey = scoreData.trailerKey;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -165,7 +181,9 @@ class _ScoreWidget extends StatelessWidget {
                   child: Text(scoreData.voteAverage.toStringAsFixed(0)),
                 ),
               ),
-              const SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               const Text('User Score'),
             ],
           ),
@@ -200,7 +218,8 @@ class _MovieGenresWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var summary =
         context.select((MovieDetailsModel model) => model.data.summary);
-    return ColoredBox(
+    return Container(
+      width: double.infinity,
       color: const Color.fromRGBO(15, 12, 12, 1),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

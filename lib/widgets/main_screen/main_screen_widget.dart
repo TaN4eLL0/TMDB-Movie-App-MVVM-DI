@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 import 'package:movieapp/navigation/main_navigation.dart';
-import 'package:movieapp/widgets/main_screen/main_screen_view_model.dart';
-import 'package:provider/provider.dart';
 
 class MainScreenWidget extends StatefulWidget {
   final ScreenFactory screenFactory;
@@ -30,20 +28,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MainScreenViewModel>();
     return Scaffold(
       backgroundColor: Colors.black38,
-      appBar: AppBar(
-        title: const Text(
-          'MovieApp',
-          textAlign: TextAlign.start,
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => model.logoutAccount(context),
-              icon: const Icon(Icons.logout)),
-        ],
-      ),
       body: LazyLoadIndexedStack(
         index: _selectedTab,
         children: [
@@ -54,31 +40,31 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
-          currentIndex: _selectedTab,
-          unselectedItemColor: Colors.grey,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_filled,
-              ),
-              label: 'Home',
+        currentIndex: _selectedTab,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_filled,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.movie_filter_rounded,
-              ),
-              label: 'Films',
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.movie_filter_rounded,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.star,
-              ),
-              label: 'Favorites',
+            label: 'Films',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.star,
             ),
-          ],
-          fixedColor: Colors.white,
-          // selectedItemColor: Colors.white,
-          onTap: onSelectedTab),
+            label: 'Favorites',
+          ),
+        ],
+        fixedColor: Colors.white,
+        onTap: onSelectedTab,
+      ),
     );
   }
 }

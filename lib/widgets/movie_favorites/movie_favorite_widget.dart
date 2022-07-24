@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:movieapp/domain/api_client/image_downloader.dart';
+import 'package:movieapp/widgets/main_screen/main_screen_view_model.dart';
 import 'package:movieapp/widgets/movie_favorites/movie_favorite_model.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,25 @@ class _MovieFavoriteWidgetState extends State<MovieFavoriteWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return const _MovieListWidget();
+    final _model = context.read<MainScreenViewModel>();
+    return Scaffold(
+      backgroundColor: Colors.black38,
+      appBar: AppBar(
+        title: const Text(
+          'MovieApp',
+          textAlign: TextAlign.start,
+        ),
+        actions: [
+          IconButton(
+            onPressed: () => _model.logoutAccount(context),
+            icon: const Icon(
+              Icons.logout,
+            ),
+          ),
+        ],
+      ),
+      body: const _MovieListWidget(),
+    );
   }
 }
 

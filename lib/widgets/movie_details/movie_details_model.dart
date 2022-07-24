@@ -20,7 +20,8 @@ class MovieDetailsPosterData {
 class MovieDetailsFavoriteData {
   final bool isFavorite;
 
-  IconData get favoriteIcon => isFavorite ? Icons.clear : Icons.add;
+  IconData get favoriteIcon =>
+      isFavorite ? Icons.favorite : Icons.favorite_border;
 
   MovieDetailsFavoriteData({
     this.isFavorite = false,
@@ -92,7 +93,7 @@ class MovieDetailsData {
   MovieDetailsScorerData scoreData = MovieDetailsScorerData(voteAverage: 0);
   String summary = '';
   List<List<MovieDetailsPeopleData>> peopleData =
-  const <List<MovieDetailsPeopleData>>[];
+      const <List<MovieDetailsPeopleData>>[];
   List<MovieDetailsActorData> actorsData = const <MovieDetailsActorData>[];
 }
 
@@ -122,7 +123,8 @@ class MovieDetailsModel extends ChangeNotifier {
   final _localeStorage = LocalizedModelStorage();
   late DateFormat _dateFormat;
 
-  MovieDetailsModel(this.movieId, {
+  MovieDetailsModel(
+    this.movieId, {
     required this.movieProvider,
     required this.logoutProvider,
     required this.navigationActions,
@@ -168,13 +170,12 @@ class MovieDetailsModel extends ChangeNotifier {
     data.summary = makeSummary(details);
     data.peopleData = makePeopleData(details);
     data.actorsData = details.credits.cast
-        .map((e) =>
-        MovieDetailsActorData(
-          name: e.name,
-          character: e.character,
-          profilePath: e.profilePath,
-          id: e.id,
-        ))
+        .map((e) => MovieDetailsActorData(
+              name: e.name,
+              character: e.character,
+              profilePath: e.profilePath,
+              id: e.id,
+            ))
         .toList();
 
     notifyListeners();
@@ -182,11 +183,10 @@ class MovieDetailsModel extends ChangeNotifier {
 
   List<List<MovieDetailsPeopleData>> makePeopleData(MovieDetails details) {
     var crew = details.credits.crew
-        .map((e) =>
-        MovieDetailsPeopleData(
-          name: e.name,
-          job: e.job,
-        ))
+        .map((e) => MovieDetailsPeopleData(
+              name: e.name,
+              job: e.job,
+            ))
         .toList();
     crew = crew.length > 4 ? crew.sublist(0, 4) : crew;
     var crewChunks = <List<MovieDetailsPeopleData>>[];
@@ -257,8 +257,10 @@ class MovieDetailsModel extends ChangeNotifier {
     );
   }
 
-  void _handleApiClientException(ApiClientException exception,
-      BuildContext context,) async {
+  void _handleApiClientException(
+    ApiClientException exception,
+    BuildContext context,
+  ) async {
     switch (exception.type) {
       case ApiClientExceptionType.sessionExpired:
         logoutProvider.logout();

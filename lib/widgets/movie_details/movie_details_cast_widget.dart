@@ -46,7 +46,7 @@ class _ActorListWidget extends StatelessWidget {
     if (cast.isEmpty) return const SizedBox.shrink();
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemExtent: 120,
+      itemExtent: 125,
       itemCount: cast.length,
       itemBuilder: (BuildContext context, int index) {
         return _ActorListItemWidget(actorIndex: index);
@@ -85,7 +85,6 @@ class _ActorListItemWidget extends StatelessWidget {
                 children: [
                   if (profilePath != null)
                     Image.network(ImageDownloader.imageUrl(profilePath)),
-
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Column(
@@ -99,7 +98,7 @@ class _ActorListItemWidget extends StatelessWidget {
                         ),
                         Text(
                           actor.character,
-                          maxLines: 2,
+                          maxLines: 1,
                           style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 11,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movieapp/widgets/movie_details/movie_details_model.dart';
 import 'package:provider/provider.dart';
 import 'movie_details_cast_widget.dart';
-import 'movie_details_floating_button_widget.dart';
 import 'movie_details_info_widget.dart';
 
 class MovieDetailsWidget extends StatefulWidget {
@@ -32,8 +31,6 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
         centerTitle: true,
         title: const _TitleWidget(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: const MovieDetailsFloatingButtonWidget(),
       body: const ColoredBox(
         color: Color.fromRGBO(24, 23, 27, 1),
         child: _BodyWidget(),
